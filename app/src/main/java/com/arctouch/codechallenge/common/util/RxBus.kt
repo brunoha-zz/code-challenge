@@ -6,6 +6,4 @@ class RxBus {
     companion object {
         val bus : BehaviorSubject<Any> = BehaviorSubject.create()
     }
-
-
 }

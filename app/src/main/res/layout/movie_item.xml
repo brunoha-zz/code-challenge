@@ -24,6 +24,7 @@
             android:adjustViewBounds="true"
             android:importantForAccessibility="no"
             android:scaleType="fitCenter"
+            android:transitionName="@string/item_movie_transition"
             android:src="@drawable/ic_image_placeholder" />
 
         <TextView

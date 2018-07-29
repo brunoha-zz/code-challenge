@@ -1,6 +1,7 @@
 package com.arctouch.codechallenge.common.model.api
 
 import com.arctouch.codechallenge.common.model.GenreResponse
+import com.arctouch.codechallenge.common.model.ImagesResponse
 import com.arctouch.codechallenge.common.model.Movie
 import com.arctouch.codechallenge.common.model.UpcomingMoviesResponse
 import io.reactivex.Observable
@@ -19,22 +20,30 @@ interface TmdbApi {
 
     @GET("genre/movie/list")
     fun genres(
-        @Query("api_key") apiKey: String,
-        @Query("language") language: String
+            @Query("api_key") apiKey: String,
+            @Query("language") language: String
     ): Observable<GenreResponse>
+
+    @GET("movie/{id}/images")
+    fun getImages(
+            @Path("id") id : Long,
+            @Query("api_key") apiKey: String
+    ): Observable<ImagesResponse>
+
 
     @GET("movie/upcoming")
     fun upcomingMovies(
-        @Query("api_key") apiKey: String,
-        @Query("language") language: String,
-        @Query("page") page: Long,
-        @Query("region") region: String
+            @Query("api_key") apiKey: String,
+            @Query("language") language: String,
+            @Query("page") page: Long
     ): Observable<UpcomingMoviesResponse>
 
     @GET("movie/{id}")
     fun movie(
-        @Path("id") id: Long,
-        @Query("api_key") apiKey: String,
-        @Query("language") language: String
+            @Path("id") id: Long,
+            @Query("api_key") apiKey: String,
+            @Query("language") language: String
     ): Observable<Movie>
 }
+
+

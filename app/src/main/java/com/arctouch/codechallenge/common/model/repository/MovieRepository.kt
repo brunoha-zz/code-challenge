@@ -1,6 +1,7 @@
 package com.arctouch.codechallenge.common.model.repository
 
 import android.util.Log
+import com.arctouch.codechallenge.common.model.ImagesResponse
 import com.arctouch.codechallenge.common.model.Movie
 import com.arctouch.codechallenge.common.model.api.RetrofitClient
 import com.arctouch.codechallenge.common.model.api.TmdbApi
@@ -10,14 +11,15 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class MovieRepository {
-    val client = RetrofitClient.apiInstance
+
+    private val client = RetrofitClient.apiInstance
 
     fun upcomingMovies(): Observable<MutableList<Movie>> {
         return client.genres(TmdbApi.API_KEY, TmdbApi.DEFAULT_LANGUAGE)
                 .subscribeOn(Schedulers.newThread())
                 .flatMap {
                     Cache.cacheGenres(it.genres)
-                    client.upcomingMovies(TmdbApi.API_KEY, TmdbApi.DEFAULT_LANGUAGE, 1, TmdbApi.DEFAULT_REGION)
+                    client.upcomingMovies(TmdbApi.API_KEY, TmdbApi.DEFAULT_LANGUAGE, 1)
                 }.map { movieList ->
                     insertGender(movieList.results)
                     movieList.results
@@ -34,8 +36,24 @@ class MovieRepository {
         }
     }
 
+    fun getMovieDetails(id:Long): Observable<Movie>? {
+        return client.movie(id,TmdbApi.API_KEY,TmdbApi.DEFAULT_LANGUAGE).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun getImages(id: Long): Observable<ImagesResponse> {
+        return client.getImages(id, TmdbApi.API_KEY)
+                .map { movie ->
+                    movie.backdrops.filter {
+                        it.voteCount > 0
+                    }
+                    movie
+                }.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+    }
+
     fun upcomingMovies(page: Long): Observable<MutableList<Movie>> {
-        return RetrofitClient.apiInstance.upcomingMovies(TmdbApi.API_KEY, TmdbApi.DEFAULT_LANGUAGE, page, TmdbApi.DEFAULT_REGION)
+        return client.upcomingMovies(TmdbApi.API_KEY, TmdbApi.DEFAULT_LANGUAGE, page)
                 .map { movieList ->
                     insertGender(movieList.results)
                     movieList.results
