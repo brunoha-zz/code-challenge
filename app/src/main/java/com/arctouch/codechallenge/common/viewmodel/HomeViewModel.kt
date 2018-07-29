@@ -1,7 +1,8 @@
-package com.arctouch.codechallenge.home.viewmodel
+package com.arctouch.codechallenge.common.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import com.arctouch.codechallenge.common.model.Cast
 import com.arctouch.codechallenge.common.model.Movie
 import com.arctouch.codechallenge.common.model.repository.MovieRepository
 
@@ -10,7 +11,8 @@ class HomeViewModel : ViewModel() {
     private val repository = MovieRepository()
 
     val movies = MutableLiveData<MutableList<Movie>>()
-    var page : Long = 1
+    val actors = MutableLiveData<List<Cast>>()
+    var pageUpcomming : Long = 1
 
     init {
         movies.value = ArrayList()
@@ -33,5 +35,11 @@ class HomeViewModel : ViewModel() {
         movies.postValue(
                 list
         )
+    }
+
+    fun getActors(id : Long){
+        repository.getActiots(id).subscribe { onNextResult ->
+            actors.value = onNextResult
+        }
     }
 }

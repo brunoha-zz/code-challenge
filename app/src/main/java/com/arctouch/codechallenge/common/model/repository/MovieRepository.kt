@@ -1,6 +1,8 @@
 package com.arctouch.codechallenge.common.model.repository
 
 import android.util.Log
+import com.arctouch.codechallenge.common.model.Cast
+import com.arctouch.codechallenge.common.model.CreditResponse
 import com.arctouch.codechallenge.common.model.ImagesResponse
 import com.arctouch.codechallenge.common.model.Movie
 import com.arctouch.codechallenge.common.model.api.RetrofitClient
@@ -29,16 +31,13 @@ class MovieRepository {
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
+
+
     private fun insertGender(movieList: MutableList<Movie>) {
         movieList.forEach { movieResult ->
             movieResult.genres = ArrayList()
             movieResult.genres.addAll(Cache.genres.filter { movieResult.genreIds?.contains(it.id) == true })
         }
-    }
-
-    fun getMovieDetails(id:Long): Observable<Movie>? {
-        return client.movie(id,TmdbApi.API_KEY,TmdbApi.DEFAULT_LANGUAGE).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
     }
 
     fun getImages(id: Long): Observable<ImagesResponse> {
@@ -49,6 +48,13 @@ class MovieRepository {
                     }
                     movie
                 }.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun getActiots( id: Long): Observable<List<Cast>> {
+        return client.getCredits(id,TmdbApi.API_KEY, TmdbApi.DEFAULT_LANGUAGE)
+                .map { it.cast }
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
     }
 

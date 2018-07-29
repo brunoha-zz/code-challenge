@@ -13,9 +13,11 @@ import com.arctouch.codechallenge.R
 import com.arctouch.codechallenge.common.model.Movie
 import com.arctouch.codechallenge.common.util.RxBus
 import com.arctouch.codechallenge.home.view.adapter.HomeAdapter
-import com.arctouch.codechallenge.home.viewmodel.HomeViewModel
-import com.arctouch.codechallenge.movie_detail.view.DetailActivity
+import com.arctouch.codechallenge.common.viewmodel.HomeViewModel
+import com.arctouch.codechallenge.moviedetail.view.activities.DetailActivity
 import kotlinx.android.synthetic.main.home_activity.*
+import android.support.v4.app.ActivityOptionsCompat
+
 
 class HomeActivity : AppCompatActivity() {
 
@@ -49,8 +51,14 @@ class HomeActivity : AppCompatActivity() {
         })
 
         adapter.click.subscribe {
-            RxBus.bus.onNext(it)
-            startActivity(Intent(applicationContext, DetailActivity::class.java))
+            val movie : Movie = it.keys.first()
+            RxBus.bus.onNext(movie)
+            val intent = Intent(this@HomeActivity, DetailActivity::class.java)
+            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this@HomeActivity,
+                    it[movie]!!,
+                    getString(R.string.item_movie_transition))
+            startActivity(intent, options.toBundle())
+//            startActivity(Intent(applicationContext, DetailActivity::class.java))
         }
 
         recyclerView.setOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -65,13 +73,13 @@ class HomeActivity : AppCompatActivity() {
                     val manager = recyclerView.layoutManager as LinearLayoutManager
                     visibleItemCount = manager.childCount
                     totalItemCount = manager.itemCount
-                    pastVisiblesItems = manager.findFirstVisibleItemPosition()
+                    pastVisiblesItems = manager.findFirstCompletelyVisibleItemPosition()
                     if (isLoading) {
                         if ((visibleItemCount!! + pastVisiblesItems!!) >= totalItemCount!!) {
                             showLoading()
                             isLoading = false
-                            homeViewModel.page += 1
-                            homeViewModel.getUpcomingMovies(homeViewModel.page)
+                            homeViewModel.pageUpcomming += 1
+                            homeViewModel.getUpcomingMovies(homeViewModel.pageUpcomming)
                         }
                     }
                 }
