@@ -12,16 +12,29 @@ class HomeViewModel : ViewModel() {
 
     val movies = MutableLiveData<MutableList<Movie>>()
     val actors = MutableLiveData<List<Cast>>()
-    var pageUpcomming : Long = 1
+    val similars = MutableLiveData<MutableList<Movie>>()
+    var pageSimilars: Long = 1
+    var pageUpcomming: Long = 1
 
     init {
         movies.value = ArrayList()
+        similars.value = ArrayList()
     }
 
     fun getUpcomingMovies() {
-        repository.upcomingMovies().subscribe { onNextResult ->
-            insertMovie(onNextResult)
+        if (movies.value!!.isEmpty())
+            repository.upcomingMovies().subscribe { onNextResult ->
+                insertMovie(onNextResult)
+            }
+    }
+
+    fun getSimilars(id: Long) {
+        repository.getSimilars(id).subscribe { onNextResult ->
+            val movieList = similars.value
+            movieList!!.addAll(onNextResult)
+            similars.value = movieList
         }
+
     }
 
     fun getUpcomingMovies(page: Long) {
@@ -31,13 +44,12 @@ class HomeViewModel : ViewModel() {
     }
 
     private fun insertMovie(list: MutableList<Movie>) {
-        movies.value?.addAll(list)
-        movies.postValue(
-                list
-        )
+        val movieList = movies.value
+        movieList!!.addAll(list)
+        movies.value = movieList
     }
 
-    fun getActors(id : Long){
+    fun getActors(id: Long) {
         repository.getActiots(id).subscribe { onNextResult ->
             actors.value = onNextResult
         }

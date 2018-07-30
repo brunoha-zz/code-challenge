@@ -6,9 +6,13 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="release_date">Data de lançamento: </string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="informations">Infos</string>
     <string name="casts">Elenco</string>
     <string name="reviews">Comentários</string>
+    <string name="like">como</string>
+    <string name="rating">Nota:</string>
+    <string name="description">Sinopse:</string>
+    <string name="similar">Do mesmo gênero:</string>
+    <string name="recommendations">Se você gostou, pode gostar também desses abaixo:</string>
+    <string name="overview_dont_found">Sinopse não encontrada</string>
 </resources>

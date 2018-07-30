@@ -6,4 +6,5 @@
     <color name="white_transp">#b3ffffff</color>
     <color name="white">#FFF</color>
     <color name="divider">#bdbdbd</color>
+    <color name="grayLight">#dadada</color>
 </resources>

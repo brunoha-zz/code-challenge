@@ -12,6 +12,10 @@ class Utils {
             val datas = date!!.split("-")
             return "${datas[2]}/${datas[1]}/${datas[0]}"
         }
+        fun getYear(date : String?): String? {
+            val datas = date!!.split("-")
+            return datas[0]
+        }
     }
 
 }

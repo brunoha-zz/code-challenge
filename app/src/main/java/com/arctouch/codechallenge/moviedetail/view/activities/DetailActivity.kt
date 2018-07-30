@@ -17,15 +17,13 @@ import com.arctouch.codechallenge.moviedetail.view.fragments.InformationFragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_detail.*
-import android.opengl.ETC1.getHeight
-import kotlinx.android.synthetic.main.fragment_cast.*
+import kotlinx.android.synthetic.main.movie_item.view.*
 
 
 class DetailActivity : AppCompatActivity() {
 
 
-
-    val homeViewModel : HomeViewModel by lazy {
+    val homeViewModel: HomeViewModel by lazy {
         ViewModelProviders.of(this).get(HomeViewModel::class.java)
     }
 
@@ -33,12 +31,11 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
-        RxBus.bus.subscribe {movie->
+        RxBus.bus.subscribe { movie ->
             bindView(movie as Movie)
         }
 
     }
-
 
     private fun bindView(movie: Movie) {
         Glide.with(applicationContext)
@@ -52,7 +49,7 @@ class DetailActivity : AppCompatActivity() {
                 .into(detailImage)
 
         detailTitle.text = movie.title
-        detailReleaseDate.text = Utils.dateFormat(movie.releaseDate)
+        detailRating.text = movie.voteAverage.toString()
 
         if (movie.genres.isNotEmpty()) {
             var genres = ""
@@ -74,6 +71,7 @@ class DetailActivity : AppCompatActivity() {
         val tabAdapter = TabAdapter(fragmentManager)
         tabAdapter.add(InformationFragment(), applicationContext.getString(R.string.informations))
         tabAdapter.add(CastFragment(), applicationContext.getString(R.string.casts))
+
         detailViewPager.adapter = tabAdapter
         detailViewPager.offscreenPageLimit = 0
         detailTabLayout.setupWithViewPager(detailViewPager)

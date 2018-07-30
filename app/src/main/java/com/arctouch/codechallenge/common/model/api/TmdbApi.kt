@@ -47,6 +47,17 @@ interface TmdbApi {
             @Query("api_key") apiKey: String,
             @Query("language") language: String
     ): Observable<Movie>
+
+
+
+    @GET("movie/{id}/similar")
+    fun getSimilars(
+            @Path("id") id: Long,
+            @Query("api_key") apiKey: String,
+            @Query("language") language: String
+    ): Observable<UpcomingMoviesResponse>
+
+
 }
 
 

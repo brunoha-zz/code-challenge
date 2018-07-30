@@ -23,7 +23,7 @@ class ActorAdapter(private val actors: List<Cast>) : RecyclerView.Adapter<ActorA
 
         fun bind(cast: Cast) {
             itemView.actorName.text = cast.name
-            itemView.actorCharacter.text = cast.character
+            itemView.actorCharacter.text = "${itemView.context.getString(R.string.like)} ${cast.character}"
 
             Glide.with(itemView)
                     .load(cast.profilePath?.let { MovieImageUrlBuilder.buildPosterUrl(it) })

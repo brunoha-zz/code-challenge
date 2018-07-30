@@ -24,8 +24,6 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var adapter: HomeAdapter
     private var isLoading: Boolean = true
 
-    private val movieList = ArrayList<Movie>()
-
     private val homeViewModel: HomeViewModel by lazy {
         ViewModelProviders.of(this).get(HomeViewModel::class.java)
     }
@@ -35,17 +33,12 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.home_activity)
 
         homeViewModel.getUpcomingMovies()
-        adapter = HomeAdapter(movieList)
+        adapter = HomeAdapter(homeViewModel.movies.value!!)
         recyclerView.adapter = adapter
         progressBar.visibility = View.GONE
 
         homeViewModel.movies.observe(this, Observer {
-            if (!it!!.isEmpty()) {
-                movieList.addAll(it.toList())
-                recyclerView.adapter.notifyDataSetChanged()
-            } else {
-                Toast.makeText(this, getString(R.string.no_results), Toast.LENGTH_SHORT).show()
-            }
+            adapter.notifyDataSetChanged()
             isLoading = true
             dismissLoading()
         })
@@ -58,7 +51,6 @@ class HomeActivity : AppCompatActivity() {
                     it[movie]!!,
                     getString(R.string.item_movie_transition))
             startActivity(intent, options.toBundle())
-//            startActivity(Intent(applicationContext, DetailActivity::class.java))
         }
 
         recyclerView.setOnScrollListener(object : RecyclerView.OnScrollListener() {

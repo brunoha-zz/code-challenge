@@ -31,7 +31,13 @@ class MovieRepository {
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
-
+    fun getSimilars(id : Long): Observable<MutableList<Movie>> {
+        return client.getSimilars(id,TmdbApi.API_KEY, TmdbApi.DEFAULT_LANGUAGE)
+                .map{
+                    it.results
+                }.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+    }
 
     private fun insertGender(movieList: MutableList<Movie>) {
         movieList.forEach { movieResult ->
