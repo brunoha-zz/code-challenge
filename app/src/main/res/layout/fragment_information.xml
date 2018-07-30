@@ -84,38 +84,6 @@
             android:layout_marginTop="8dp" />
 
 
-        <LinearLayout
-            android:id="@+id/infoRecommendationLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <android.support.v7.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/recommendations"
-                android:textSize="18sp"
-                app:fontFamily="@font/roboto_black" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/infoRecommendation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp" />
-
-
-        </LinearLayout>
-
-
     </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>

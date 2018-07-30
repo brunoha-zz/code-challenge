@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".splash.SplashActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:theme="@style/AppTheme.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,10 +22,6 @@
         </activity>
         <activity android:name=".home.view.activity.HomeActivity" />
         <activity android:name=".moviedetail.view.activities.DetailActivity" />
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

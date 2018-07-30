@@ -2,6 +2,7 @@ package com.arctouch.codechallenge.moviedetail.view.activities
 
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.design.widget.AppBarLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
@@ -18,6 +19,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.movie_item.view.*
+import android.R.id.toggle
+import android.view.MenuItem
 
 
 class DetailActivity : AppCompatActivity() {
@@ -30,6 +33,12 @@ class DetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
+
+        setSupportActionBar(detailToolbar)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.setHomeButtonEnabled(true)
+
+
 
         RxBus.bus.subscribe { movie ->
             bindView(movie as Movie)
@@ -50,7 +59,7 @@ class DetailActivity : AppCompatActivity() {
 
         detailTitle.text = movie.title
         detailRating.text = movie.voteAverage.toString()
-
+        setupAppBar(movie.title)
         if (movie.genres.isNotEmpty()) {
             var genres = ""
             movie.genres.forEach {
@@ -67,7 +76,14 @@ class DetailActivity : AppCompatActivity() {
 
     }
 
-    fun setupViewPager(fragmentManager: FragmentManager) {
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item!!.itemId) {
+            android.R.id.home -> onBackPressed()
+        }
+        return true
+    }
+
+    private fun setupViewPager(fragmentManager: FragmentManager) {
         val tabAdapter = TabAdapter(fragmentManager)
         tabAdapter.add(InformationFragment(), applicationContext.getString(R.string.informations))
         tabAdapter.add(CastFragment(), applicationContext.getString(R.string.casts))
@@ -76,7 +92,30 @@ class DetailActivity : AppCompatActivity() {
         detailViewPager.offscreenPageLimit = 0
         detailTabLayout.setupWithViewPager(detailViewPager)
     }
+
+    private fun setupAppBar(title : String){
+        detailAppbar.addOnOffsetChangedListener(object : AppBarLayout.OnOffsetChangedListener {
+            var isShow = true
+            var scrollRange : Int = -1
+
+
+            override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
+                if (scrollRange == -1) {
+                    scrollRange = appBarLayout!!.totalScrollRange
+                }
+                if (scrollRange + verticalOffset == 0) {
+                    detailCollapsingBar.title = title
+                    isShow = true
+                } else if(isShow) {
+                    detailCollapsingBar.title = " "
+                    isShow = false
+                }
+            }
+        });
+    }
 }
+
+
 
 class TabAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
 

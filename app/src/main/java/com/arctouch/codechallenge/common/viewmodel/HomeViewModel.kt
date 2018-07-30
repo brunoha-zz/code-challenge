@@ -17,6 +17,7 @@ class HomeViewModel : ViewModel() {
     var pageUpcomming: Long = 1
 
     init {
+        actors.value = ArrayList()
         movies.value = ArrayList()
         similars.value = ArrayList()
     }
@@ -50,8 +51,9 @@ class HomeViewModel : ViewModel() {
     }
 
     fun getActors(id: Long) {
-        repository.getActiots(id).subscribe { onNextResult ->
-            actors.value = onNextResult
-        }
+        if (actors.value!!.isEmpty())
+            repository.getActiots(id).subscribe { onNextResult ->
+                actors.value = onNextResult
+            }
     }
 }

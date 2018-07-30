@@ -32,7 +32,11 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home_activity)
 
+        if(!homeViewModel.movies.value!!.isEmpty()){
+            dismissLoading()
+        }
         homeViewModel.getUpcomingMovies()
+
         adapter = HomeAdapter(homeViewModel.movies.value!!)
         recyclerView.adapter = adapter
         progressBar.visibility = View.GONE
