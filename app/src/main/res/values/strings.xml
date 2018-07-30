@@ -1,4 +1,18 @@
 <resources>
     <string name="app_name">Code Challenge</string>
-    <string name="movie_and_genres">%s - %s</string>
+    <string name="movie_and_genres">%1$s - %2$s</string>
+    <string name="no_results">Não há mais resultados a ser mostrados</string>
+    <string name="item_movie_transition">item_movie_img</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="release_date">Data de lançamento: </string>
+
+    <string name="informations">Infos</string>
+    <string name="casts">Elenco</string>
+    <string name="reviews">Comentários</string>
+    <string name="like">como</string>
+    <string name="rating">Nota:</string>
+    <string name="description">Sinopse:</string>
+    <string name="similar">Do mesmo gênero:</string>
+    <string name="recommendations">Se você gostou, pode gostar também desses abaixo:</string>
+    <string name="overview_dont_found">Sinopse não encontrada</string>
 </resources>
